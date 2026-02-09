@@ -7,7 +7,7 @@ import com.example.streamui.R
 
 class SongRepository {
     // Base de datos con canciones de prueba
-    val songs = listOf(
+    private val songList = listOf(
         Song("1", "Animal I Have Become", "Three Days Grace", R.drawable.ic_launcher_background, isFavorite = true),
         Song("2", "American Idiot", "Green Day", R.drawable.ic_launcher_foreground),
         Song("3", "Break Stuff", "Limp Bizkit", R.drawable.ic_launcher_background),
@@ -17,10 +17,10 @@ class SongRepository {
     )
 
     fun getSongs() : List<Song> {
-        return songs;
+        return songList;
     }
 
     fun getFavorites() : List<Song> {
-        return songs.filter { it.isFavorite }
+        return songList.filter { it.isFavorite }
     }
 }
