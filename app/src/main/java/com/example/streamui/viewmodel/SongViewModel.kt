@@ -1,11 +1,13 @@
 package com.example.streamui.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.streamui.data.model.Song
 import com.example.streamui.data.repository.SongRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 // El ViewModel va a recibir al repositorio (se mira como si fuera una cocina).
 class SongViewModel(private val repository: SongRepository) : ViewModel() {
@@ -21,6 +23,21 @@ class SongViewModel(private val repository: SongRepository) : ViewModel() {
     }
 
     private fun loadSongs() {
-        _songs.value = repository.getSongs()
+        viewModelScope.launch {
+            _songs.value = repository.getSongs()
+        }
+    }
+
+    // Aplicacion nueva
+    fun toggleFavorite(song: Song) {
+        // Se recorre la lista actual y se modifica solo la cancion que se toco.
+        _songs.value = _songs.value.map { currentSong ->
+            if (currentSong.id == song.id) {
+                // Se crea una copia con el valor de favorito invertido.
+                currentSong.copy(isFavorite = !currentSong.isFavorite)
+            } else {
+                currentSong
+            }
+        }
     }
 }
