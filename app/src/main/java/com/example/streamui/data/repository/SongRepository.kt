@@ -1,26 +1,52 @@
 package com.example.streamui.data.repository
 
-// Librerias para funcionamiento de la data de streamUI
-
 import com.example.streamui.data.model.Song
 import com.example.streamui.R
 
 class SongRepository {
-    // Base de datos con canciones de prueba
+    // Modificacion de imagen.
     private val songList = listOf(
-        Song("1", "Animal I Have Become", "Three Days Grace", R.drawable.ic_launcher_background, isFavorite = true),
-        Song("2", "American Idiot", "Green Day", R.drawable.ic_launcher_foreground),
-        Song("3", "Break Stuff", "Limp Bizkit", R.drawable.ic_launcher_background),
-        Song("4", "Numb", "Sleep Theory", R.drawable.ic_launcher_foreground),
-        Song("5", "In The End", "Linkin Park", R.drawable.ic_launcher_background, isFavorite = true),
-        Song("6", "Last Resort", "Papa Roach", R.drawable.ic_launcher_foreground)
+        Song(
+            id = "1",
+            title = "Animal I Have Become",
+            artist = "Three Days Grace",
+            albumCover = R.drawable.animal_i_have_become,
+            isFavorite = true
+        ),
+        Song(
+            id = "2",
+            title = "American Idiot",
+            artist = "Green Day",
+            albumCover = R.drawable.american_idiot
+        ),
+        Song(
+            id = "3",
+            title = "Break Stuff",
+            artist = "Limp Bizkit",
+            albumCover = R.drawable.break_stuff
+        ),
+        Song(
+            id = "4",
+            title = "Numb",
+            artist = "Linkin Park",
+            albumCover = R.drawable.numb
+        ),
+        Song(
+            id = "5",
+            title = "In The End",
+            artist = "Linkin Park",
+            albumCover = R.drawable.i_the_end,
+            isFavorite = true
+        ),
+        Song(
+            id = "6",
+            title = "Last Resort",
+            artist = "Papa Roach",
+            albumCover = R.drawable.papa_roach
+        )
     )
 
     fun getSongs() : List<Song> {
-        return songList;
-    }
-
-    fun getFavorites() : List<Song> {
-        return songList.filter { it.isFavorite }
+        return songList
     }
 }
