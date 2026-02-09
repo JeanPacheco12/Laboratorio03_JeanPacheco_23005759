@@ -28,6 +28,14 @@ class SongViewModel(private val repository: SongRepository) : ViewModel() {
         }
     }
 
+    // Variable para guardar lo que escribe el usuario.
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
+    fun onSearchQueryChange(newQuery: String) {
+        _searchQuery.value = newQuery
+    }
+
     // Aplicacion nueva
     fun toggleFavorite(song: Song) {
         // Se recorre la lista actual y se modifica solo la cancion que se toco.
