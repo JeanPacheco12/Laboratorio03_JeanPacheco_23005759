@@ -24,10 +24,7 @@ import org.koin.androidx.compose.koinViewModel
 
 // Esto es la pantalla principal (la lista).
 @Composable
-fun SongScreen(
-    viewModel: SongViewModel = koinViewModel() // Koin inyecta el ViewModel automaticamente.
-) {
-    // Se escucha la lista de canciones. Si cambia, la pantalla se repinta sola.
+fun SongScreen(viewModel: SongViewModel = koinViewModel()) {
     val songs by viewModel.songs.collectAsState()
 
     LazyColumn(
@@ -35,14 +32,20 @@ fun SongScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(songs) { song ->
-            SongItem(song = song)
+            SongItem(
+                song = song,
+                onFavoriteClick = { viewModel.toggleFavorite(song) }
+            )
         }
     }
 }
 
 // Aqui esta diseño de cada fila (Una cancion individual).
 @Composable
-fun SongItem(song: Song) {
+fun SongItem(
+    song: Song,
+    onFavoriteClick: () -> Unit // Nuevo parametro (Evento)
+) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = Modifier.fillMaxWidth()
@@ -53,7 +56,6 @@ fun SongItem(song: Song) {
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Aqui la portada del album.
             Image(
                 painter = painterResource(id = song.albumCover),
                 contentDescription = "Album Cover",
@@ -63,26 +65,19 @@ fun SongItem(song: Song) {
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            // Título y artista (banda en este caso jaja)
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = song.title,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = song.artist,
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.secondary
-                )
+                Text(text = song.title, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(text = song.artist, fontSize = 14.sp, color = MaterialTheme.colorScheme.secondary)
             }
 
-            // Corazon (Para el favorito)
-            Icon(
-                imageVector = if (song.isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                contentDescription = "Favorite",
-                tint = if (song.isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
-            )
+            // Se envuelve el icono en un boton (IconButton).
+            IconButton(onClick = { onFavoriteClick() }) {
+                Icon(
+                    imageVector = if (song.isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                    contentDescription = "Favorite",
+                    tint = if (song.isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
     }
 }

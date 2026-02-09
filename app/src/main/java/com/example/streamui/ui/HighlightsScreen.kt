@@ -12,13 +12,8 @@ import com.example.streamui.viewmodel.SongViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun HighlightsScreen(
-    viewModel: SongViewModel = koinViewModel()
-) {
-    // Aqui se escuchan las canciones igual que en Home.
+fun HighlightsScreen(viewModel: SongViewModel = koinViewModel()) {
     val songs by viewModel.songs.collectAsState()
-
-    // 🕵Solo se muestran las que tienen corazón (isFavorite == true).
     val favoriteSongs = songs.filter { it.isFavorite }
 
     LazyColumn(
@@ -26,8 +21,10 @@ fun HighlightsScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(favoriteSongs) { song ->
-            // Se reusa el diseño de fila que ya se habia creado antes como reciclaje de codigo.
-            SongItem(song = song)
+            SongItem(
+                song = song,
+                onFavoriteClick = { viewModel.toggleFavorite(song) }
+            )
         }
     }
 }
